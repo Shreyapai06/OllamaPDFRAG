@@ -1,0 +1,17 @@
+/* Angular Material theme is loaded via angular.json prebuilt theme */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #fafafa;
+}
+
+/* AG Grid theme */
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-material.css';
+
+.ag-theme-material {
+  --ag-row-height: 36px;
+  --ag-header-height: 40px;
+  --ag-font-size: 13px;
+}

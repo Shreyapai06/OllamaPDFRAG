@@ -1,0 +1,18 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        # Inject env vars into a runtime-accessible window.__env object
+        - echo "window.__env = { NG_APP_API_URL: '$NG_APP_API_URL' };" > src/assets/env.js
+        - npm run build
+  artifacts:
+    baseDirectory: dist/frontend/browser
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
