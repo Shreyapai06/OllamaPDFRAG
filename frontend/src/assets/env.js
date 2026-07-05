@@ -1,3 +1,2 @@
-// This file is overwritten by the Amplify build to inject NG_APP_API_URL.
-// Locally it points to localhost; on Amplify it points to the Railway backend.
-window.__env = { NG_APP_API_URL: '' };
+// Replaced at build time by Amplify (sed substitution). Locally serves as-is.
+window.__env = { NG_APP_API_URL: '__API_URL__' };
