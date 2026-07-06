@@ -17,7 +17,6 @@ export class PdfService {
     form.append('file', file);
     const req = new HttpRequest('POST', `${this.api.base}/pdfs/upload`, form, {
       reportProgress: true,
-      observe: 'events',
     });
     return this.api.http.request(req).pipe(
       filter(e => e.type === HttpEventType.UploadProgress || e.type === HttpEventType.Response),
