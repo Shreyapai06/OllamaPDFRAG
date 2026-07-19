@@ -1,9 +1,13 @@
-"""ReAct agent — iterative retrieve-then-reason loop powered by Groq."""
+"""ReAct agent — iterative retrieve-then-reason loop.
+
+Works with any OpenAI-compatible client (Groq, Ollama, etc.).
+The client is injected via __init__ — see src/core/llm_client.py.
+"""
 import logging
 from dataclasses import dataclass, field
 from typing import AsyncIterator, List, Optional
 
-from groq import AsyncGroq
+from openai import AsyncOpenAI
 
 from .hybrid import HybridRetriever
 
@@ -66,8 +70,8 @@ def _format_history(messages: list) -> str:
         return "(no prior conversation)"
     lines = []
     for m in messages[-6:]:
-        role = getattr(m, "role", m.get("role", "?")).capitalize()
-        content = getattr(m, "content", m.get("content", ""))[:200]
+        role = (m.get("role", "?") if isinstance(m, dict) else getattr(m, "role", "?")).capitalize()
+        content = (m.get("content", "") if isinstance(m, dict) else getattr(m, "content", ""))[:200]
         lines.append(f"{role}: {content}")
     return "\n".join(lines)
 
@@ -82,12 +86,12 @@ class ReActAgent:
     def __init__(
         self,
         retriever: HybridRetriever,
-        groq_api_key: str,
+        client: AsyncOpenAI,
         model: str = "llama-3.3-70b-versatile",
         max_iterations: int = 1,
     ):
         self.retriever = retriever
-        self.client = AsyncGroq(api_key=groq_api_key)
+        self.client = client
         self.model = model
         self.max_iterations = max_iterations
 

@@ -1,9 +1,9 @@
-"""Health check — Groq connectivity + in-memory state stats."""
+"""Health check — LLM provider connectivity + in-memory state stats."""
 from fastapi import APIRouter
-from groq import AsyncGroq
 from ..config import settings
 from ..dependencies import get_state
 from ..models import HealthResponse
+from ...core.llm_client import make_llm_client
 
 router = APIRouter(prefix="/health", tags=["health"])
 
@@ -12,17 +12,17 @@ router = APIRouter(prefix="/health", tags=["health"])
 async def health():
     state = get_state()
 
-    groq_ok = False
+    llm_ok = False
     try:
-        client = AsyncGroq(api_key=settings.GROQ_API_KEY)
+        client = make_llm_client(settings)
         await client.models.list()
-        groq_ok = True
+        llm_ok = True
     except Exception:
         pass
 
     return HealthResponse(
-        status="ok" if groq_ok else "degraded",
-        groq_connected=groq_ok,
+        status="ok" if llm_ok else "degraded",
+        groq_connected=llm_ok,  # field kept as-is for frontend compatibility
         total_pdfs=len(state.pdfs),
         total_chunks=len(state.chunks),
     )

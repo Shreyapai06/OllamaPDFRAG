@@ -6,6 +6,11 @@ html, body {
   background: #fafafa;
 }
 
+/* Allow the inner chat messages div to own scrolling, not the sidenav content */
+.mat-drawer-content {
+  overflow: hidden !important;
+}
+
 /* AG Grid theme */
 @import 'ag-grid-community/styles/ag-grid.css';
 @import 'ag-grid-community/styles/ag-theme-material.css';

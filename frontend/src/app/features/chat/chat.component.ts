@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ChatStateService } from '../../core/state/chat-state.service';
 import { MessageBubbleComponent } from './message-bubble/message-bubble.component';
-import { Message } from '../../types';
 
 @Component({
   selector: 'app-chat',
@@ -57,18 +56,24 @@ export class ChatComponent implements AfterViewChecked {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef<HTMLDivElement>;
 
   question = '';
+  private shouldScroll = false;
 
   constructor(public chatState: ChatStateService) {}
 
   ngAfterViewChecked(): void {
-    const el = this.scrollContainer?.nativeElement;
-    if (el) el.scrollTop = el.scrollHeight;
+    // Only auto-scroll while streaming or right after the user submits — not on every tick
+    if (this.shouldScroll || this.chatState.isStreaming$.value) {
+      const el = this.scrollContainer?.nativeElement;
+      if (el) el.scrollTop = el.scrollHeight;
+      this.shouldScroll = false;
+    }
   }
 
   submit(): void {
     const q = this.question.trim();
     if (!q || this.chatState.isStreaming$.value) return;
     this.question = '';
+    this.shouldScroll = true;
     this.chatState.submitQuestion(q);
   }
 }

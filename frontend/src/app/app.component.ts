@@ -23,9 +23,9 @@ import { ChatComponent } from './features/chat/chat.component';
   `,
   styles: [`
     .shell { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-    .sidenav-container { flex: 1; overflow: hidden; }
-    .sidenav { width: 280px; border-right: 1px solid rgba(0,0,0,0.12); }
-    .main-content { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+    .sidenav-container { flex: 1; min-height: 0; }
+    .sidenav { width: 280px; border-right: 1px solid rgba(0,0,0,0.12); overflow-y: auto; }
+    app-chat { display: flex; flex-direction: column; height: 100%; }
   `],
 })
 export class AppComponent {}

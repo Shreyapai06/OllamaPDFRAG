@@ -1,0 +1,20 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+
+# Local env override (Amplify regenerates this at build time)
+frontend/src/assets/env.js
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store

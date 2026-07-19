@@ -1,0 +1,8 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Local env override — Amplify replaces this at build time via sed
+src/assets/env.js

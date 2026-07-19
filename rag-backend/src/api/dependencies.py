@@ -7,6 +7,7 @@ from ..core.bm25 import BM25Retriever
 from ..core.embeddings import EmbeddingModel
 from ..core.hybrid import HybridRetriever
 from ..core.agent import ReActAgent
+from ..core.llm_client import make_llm_client, active_model
 from .services.pdf_service import PDFService
 from .services.rag_service import RAGService
 
@@ -25,8 +26,8 @@ def _retriever() -> HybridRetriever:
 def _agent() -> ReActAgent:
     return ReActAgent(
         retriever=_retriever(),
-        groq_api_key=settings.GROQ_API_KEY,
-        model=settings.GROQ_CHAT_MODEL,
+        client=make_llm_client(settings),
+        model=active_model(settings),
         max_iterations=settings.MAX_AGENT_ITERATIONS,
     )
 
